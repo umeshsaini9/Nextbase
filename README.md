@@ -19,7 +19,7 @@ This repository contains a dockerized full-stack application with:
    ```bash
    cd backend
    uv sync
-   uv run app/main.py
+   uv run fastapi dev
    ```
 
 2. **Frontend**:
