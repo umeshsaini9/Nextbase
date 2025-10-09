@@ -230,12 +230,17 @@ export default function PrivatePage() {
         </div>
         <button
           onClick={async () => {
+            setIsUploading(true);
             await supabase.auth.signOut();
-            router.push("/auth");
+            setTimeout(() => router.push("/auth"), 300); // small delay for smoothness
+            setIsUploading(false);
           }}
-          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          disabled={isUploading}
+          className={`${
+            isUploading ? "bg-gray-400" : "bg-red-500 hover:bg-red-600"
+          } text-white px-3 py-1 rounded transition-colors duration-150`}
         >
-          Logout
+          {isUploading ? "Logging out…" : "Logout"}
         </button>
       </div>
 
@@ -334,6 +339,14 @@ export default function PrivatePage() {
         >
           Download Folder
         </button>
+        {isUploading && (
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="h-1 bg-blue-500 mt-2 rounded"
+          />
+        )}
       </div>
 
       {/* FILES & FOLDERS */}

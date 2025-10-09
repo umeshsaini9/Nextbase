@@ -12,3 +12,6 @@ export const supabase = createBrowserClient(
     },
   }
 )
+
+console.log('SUPABASE URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+console.log('SUPABASE KEY length:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length);

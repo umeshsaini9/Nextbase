@@ -1,40 +1,48 @@
 // utils/supabase/middleware.ts
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next()
+export async function updateSession(req: NextRequest) {
+  const res = NextResponse.next();
 
+  // Safe cookie bridge for Edge
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
-          return request.cookies.getAll()
+          return req.cookies.getAll();
         },
         setAll(cookies) {
-          cookies.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options)
-          })
+          try {
+            cookies.forEach(({ name, value, options }) => {
+              res.cookies.set(name, value, options);
+            });
+          } catch {
+            // ignore Edge write errors
+          }
         },
       },
     }
-  )
+  );
 
+  // Attempt to refresh session
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
-  ) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+  const pathname = req.nextUrl.pathname;
+  const isAuthRoute = pathname.startsWith("/auth");
+  const isProtected =
+    pathname.startsWith("/private") || pathname.startsWith("/dashboard");
+
+  // Redirect if no session and trying to access protected routes
+  if (!session && isProtected && !isAuthRoute) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/auth";
+    return NextResponse.redirect(redirectUrl);
   }
 
-  return response
+  return res;
 }
