@@ -33,7 +33,7 @@ NEXT_PUBLIC_FASTAPI_URL=http://localhost:8000
 
 For future use, run the following SQL to make a table:
 
-'''sql
+```sql
 CREATE TABLE countries (
 id SERIAL PRIMARY KEY,
 name VARCHAR(255) NOT NULL
@@ -43,6 +43,6 @@ INSERT INTO countries (name) VALUES
 ('United States'),
 ('Canada'),
 ('Mexico');
-'''
+```
 
 Then, the most important step is to go to storage and create an bucket called uploads, which is set to public for testing.
