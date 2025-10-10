@@ -45,4 +45,60 @@ INSERT INTO countries (name) VALUES
 ('Mexico');
 ```
 
-Then, the most important step is to go to storage and create an bucket called uploads, which is set to public for testing.
+Then, the most important step is to go to storage and create an bucket called uploads, which is set to private to allow for rls policies.
+
+Then, use the following sql to setup rls policies and user data:
+
+```sql
+CREATE POLICY "Users can read their own files"
+ON storage.objects
+FOR SELECT
+USING (
+  auth.uid() = owner
+  OR (bucket_id = 'uploads' AND position(auth.uid()::text in name) = 1)
+);
+
+CREATE POLICY "Users can upload files into their own folder"
+ON storage.objects
+FOR INSERT
+WITH CHECK (
+  bucket_id = 'uploads'
+  AND position(auth.uid()::text in name) = 1
+);
+
+CREATE POLICY "Users can update their own files"
+ON storage.objects
+FOR UPDATE
+USING (
+  bucket_id = 'uploads' AND position(auth.uid()::text in name) = 1
+)
+WITH CHECK (
+  bucket_id = 'uploads' AND position(auth.uid()::text in name) = 1
+);
+
+CREATE POLICY "Users can delete their own files"
+ON storage.objects
+FOR DELETE
+USING (
+  bucket_id = 'uploads' AND position(auth.uid()::text in name) = 1
+);
+
+--then we have the trigger functions:
+
+CREATE OR REPLACE FUNCTION handle_storage_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.owner IS NULL THEN
+    NEW.owner := auth.uid();
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_storage_insert
+BEFORE INSERT ON storage.objects
+FOR EACH ROW
+EXECUTE FUNCTION handle_storage_insert();
+```
+
+With this, we have a pretty private bucket that can work, it still has some issues like random button activations and some error logs, however it does work.
