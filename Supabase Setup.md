@@ -31,7 +31,8 @@ NEXT_PUBLIC_FASTAPI_URL=http://localhost:8000
 
 ## Configuring Supabase
 
-For future use, run the following SQL to make a table:
+<details>
+<summary>For future use, run the following SQL to make a table:</summary>
 
 ```sql
 CREATE TABLE countries (
@@ -45,9 +46,12 @@ INSERT INTO countries (name) VALUES
 ('Mexico');
 ```
 
-Then, the most important step is to go to storage and create an bucket called uploads, which is set to private to allow for rls policies.
+</details>
 
-Then, use the following sql to setup rls policies and user data:
+The most important step is to go to storage and create an bucket called uploads, which is set to private to allow for rls policies.
+
+<details>
+<summary>Then, use the following sql to setup rls policies and user data:</summary>
 
 ```sql
 CREATE POLICY "Users can read their own files"
@@ -101,4 +105,40 @@ FOR EACH ROW
 EXECUTE FUNCTION handle_storage_insert();
 ```
 
-With this, we have a pretty private bucket that can work, it still has some issues like random button activations and some error logs, however it does work.
+</details>
+
+## Google OAuth
+
+This is quite complex and requires some external help, going out of github and everything.
+
+Here is the tutorial I followed to get it correctly: https://www.youtube.com/watch?v=sB6bPOvvlgw
+
+<details>
+<summary>So, in a nutshell, here are the steps required to make this work:</summary>
+
+1.  ### Configure Google Cloud Project
+1.  Go to Google Cloud Console and create a new project
+1.  Configure OAuth Consent Screen
+    1. In the left navigation menu, go to APIs & Services > OAuth consent screen.
+    2. Select External as the user type (unless you are a Google Workspace user) and click Create.
+    3. Fill in the required fields, such as "App name", "User support email", and "Developer contact information". Click Save and Continue.
+    4. On the Scopes page, you can define what user data your application can access (e.g., .../auth/userinfo.email, .../auth/userinfo.profile, openid). These are often pre-selected or can be added as needed. Click Save and Continue.
+    5. Add Test users if your app is still in testing.
+1.  Create OAuth Credentials
+    1. Go to APIs & Services > Credentials.
+    2. Click + Create Credentials and select OAuth client ID.
+    3. Select Web application as the Application type. Give it a name like Supabase Auth Web Client.
+    4. Authorized redirect URIs: This is a critical step. You must add the callback URL provided by Supabase. This URL follows the format: https://<your-project-ref>.supabase.co/auth/v1/callback
+       - Note: You can find your project reference in the Supabase dashboard settings. For local development, you might also add http://localhost:54321/auth/v1/callback
+1.  Get Credentials: Click Create. A modal will display your Client ID and Client Secret. Copy these, as you will need them for Supabase
+1.  ### Configure Supabase
+    1. Go to Supabase Dashboard: Navigate to your project dashboard.
+    2. Access Authentication Settings: In the left sidebar, click on Authentication (the shield icon).
+    3. Enable Google Provider: Go to the Providers tab, find Google, and click on it.
+    4. Enter Credentials:
+       - Toggle Enable Sign in with Google to ON.
+       - Paste the Client ID and Client Secret you obtained from the Google Cloud Console into the respective fields.
+       - Callback URL: Copy the URL shown here. This is the exact URL you should have added to the Google Cloud Console in Part 1, Step 3.
+    5. Save: Click Save at the bottom of the section.
+
+</details>
